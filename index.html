@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booze Brothers 🍻</title>
+
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .card {
+    background: #111;
+    padding: 50px 30px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+    color: white;
+  }
+
+  h1 {
+    color: #f5c16c;
+    font-size: 2rem;
+    margin-bottom: 50px;
+  }
+
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button {
+    padding: 18px 40px;
+    font-size: 1.1rem;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+  }
+
+  #yesBtn {
+    background: #f5c16c;
+    color: #111;
+    font-weight: bold;
+  }
+
+  #noBtn {
+    background: #777;
+    color: white;
+    position: relative;
+  }
+
+  /* Tease message */
+  .tease {
+    position: fixed;
+    background: #000;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #f5c16c;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  /* Celebration */
+  .celebrate {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #f5c16c;
+    padding: 25px;
+    animation: fadeIn 1s ease;
+  }
+
+  .celebrate h2 {
+    font-size: 2.4rem;
+    margin-bottom: 15px;
+  }
+
+  .celebrate p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .confetti {
+    position: absolute;
+    font-size: 1.8rem;
+    animation: blast 3s linear forwards;
+  }
+
+  @keyframes blast {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="mainCard">
+  <h1>Hey ultra legend buddies 😎🍻<br>Are we ready for drinks today?</h1>
+
+  <div class="btn-row">
+    <button id="yesBtn">YES 🍻</button>
+    <button id="noBtn">NO 🙄</button>
+  </div>
+</div>
+
+<div class="tease" id="teaseMsg"></div>
+
+<div class="celebrate hidden" id="celebration">
+  <h2>🍻 CHEERS 🍻</h2>
+  <p>
+    WOW! You all are legends 😎🍻<br><br>
+    Everyone is ready — finally!<br>
+    Let’s catch up today evening at the same place with the core members.<br><br>
+    Time to celebrate and live life — because you only live once 🍻🔥
+  </p>
+</div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const tease = document.getElementById("teaseMsg");
+  const mainCard = document.getElementById("mainCard");
+  const celebration = document.getElementById("celebration");
+
+  const messages = [
+    "Come on bro 🍻",
+    "No excuses today 😎",
+    "Legends don’t say no 🍻",
+    "Beer is waiting 🍺",
+    "Don’t break the brotherhood 😤"
+  ];
+
+  function escapeNo() {
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 120);
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    tease.innerText = msg;
+    tease.style.left = (x + 10) + "px";
+    tease.style.top = (y - 40) + "px";
+    tease.style.opacity = 1;
+
+    setTimeout(() => tease.style.opacity = 0, 900);
+  }
+
+  noBtn.addEventListener("mouseover", escapeNo);
+  noBtn.addEventListener("touchstart", escapeNo);
+  noBtn.addEventListener("click", escapeNo);
+
+  yesBtn.addEventListener("click", () => {
+    mainCard.classList.add("hidden");
+    celebration.classList.remove("hidden");
+    fireCrackers();
+  });
+
+  function fireCrackers() {
+    const emojis = ["🍻","🥂","🔥"];
+    setInterval(() => {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.bottom = "0";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3000);
+    }, 200);
+  }
+</script>
+
+</body>
+</html>
